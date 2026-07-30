@@ -44,8 +44,8 @@
 
       {%- for author in entry.author_array limit: author_array_limit -%}
         {% assign author_is_self = false %}
-        {%- assign author_last_name = author.last | strip -%}
-        {%- assign author_last_html = author.last -%}
+        {%- assign author_last_name = author.last | remove: '*' | strip -%}
+        {%- assign author_last_html = author.last | replace: '*', '<sup>*</sup>' -%}
         {% if site.scholar.last_name contains author_last_name %}
           {% if site.scholar.first_name contains author.first %}
             {% assign author_is_self = true %}
@@ -121,11 +121,14 @@
       {% assign venue_parts = entrytype_text %}
     {% endif %}
     {% if entry.year %}
-      {% if venue_parts != '' %}
-        {% assign venue_parts = venue_parts | append: ', ' | append: entry.year %}
-      {% else %}
-        {% assign venue_parts = entry.year %}
-      {% endif %}
+      {% assign year_str = entry.year | append: '' %}
+      {% unless venue_parts contains year_str %}
+        {% if venue_parts != '' %}
+          {% assign venue_parts = venue_parts | append: ', ' | append: entry.year %}
+        {% else %}
+          {% assign venue_parts = entry.year %}
+        {% endif %}
+      {% endunless %}
     {% endif %}
     {% if entry.award_name and entry.award_name != '' %}
       {% if venue_parts != '' %}

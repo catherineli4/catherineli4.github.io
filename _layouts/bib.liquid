@@ -1,0 +1,151 @@
+---
+---
+<div class="row">
+  <div id="{{ entry.key }}" class="col-sm-12">
+    <!-- Title (linked when a paper URL is available) -->
+    {% assign paper_url = '' %}
+    {% if entry.html and entry.html != '' %}
+      {% assign paper_url = entry.html %}
+    {% elsif entry.url and entry.url != '' %}
+      {% assign paper_url = entry.url %}
+    {% elsif entry.doi and entry.doi != '' %}
+      {% assign paper_url = entry.doi | prepend: 'https://doi.org/' %}
+    {% elsif entry.pdf and entry.pdf != '' %}
+      {% if entry.pdf contains '://' %}
+        {% assign paper_url = entry.pdf %}
+      {% else %}
+        {% assign paper_url = entry.pdf | prepend: '/assets/pdf/' | relative_url %}
+      {% endif %}
+    {% elsif entry.arxiv and entry.arxiv != '' %}
+      {% assign paper_url = entry.arxiv | prepend: 'https://arxiv.org/abs/' %}
+    {% elsif entry.eprint and entry.eprint != '' %}
+      {% assign paper_url = entry.eprint | prepend: 'https://arxiv.org/abs/' %}
+    {% endif %}
+
+    <div class="title">
+      {% if paper_url != '' %}
+        {% if paper_url contains '://' %}
+          <a href="{{ paper_url }}" rel="external noopener noreferrer" target="_blank">{{ entry.title }}</a>
+        {% else %}
+          <a href="{{ paper_url | relative_url }}">{{ entry.title }}</a>
+        {% endif %}
+      {% else %}
+        {{ entry.title }}
+      {% endif %}
+    </div>
+
+    <!-- Authors -->
+    <div class="author">
+      {% assign author_array_size = entry.author_array | size %}
+      {% assign author_array_limit = author_array_size %}
+      {% if site.max_author_limit and author_array_size > site.max_author_limit %}
+        {% assign author_array_limit = site.max_author_limit %}
+      {% endif %}
+
+      {%- for author in entry.author_array limit: author_array_limit -%}
+        {% assign author_is_self = false %}
+        {%- assign author_last_name = author.last | strip -%}
+        {%- assign author_last_html = author.last -%}
+        {% if site.scholar.last_name contains author_last_name %}
+          {% if site.scholar.first_name contains author.first %}
+            {% assign author_is_self = true %}
+          {% endif %}
+        {%- endif -%}
+        {% assign coauthor_url = null %}
+        {%- assign clean_last_name = author_last_name | downcase | remove_accents -%}
+        {% if site.data.coauthors[clean_last_name] %}
+          {%- for coauthor in site.data.coauthors[clean_last_name] -%}
+            {% if coauthor.firstname contains author.first %}
+              {%- assign coauthor_url = coauthor.url -%}
+              {% break %}
+            {%- endif -%}
+          {% endfor %}
+        {%- endif -%}
+
+        {%- if forloop.length > 1 -%}
+          {% if forloop.first == false -%}
+            {%- if forloop.length > 2 %}, {% elsif forloop.length == 2 %}  {% endif %}
+          {%- endif %}
+          {%- if forloop.last and author_array_limit == author_array_size %}and {% endif -%}
+        {% endif %}
+        {%- if author_is_self -%}
+          <em>
+            {{- author.first }}
+            {{ author_last_html -}}
+          </em>
+        {%- else -%}
+          {%- if coauthor_url -%}
+            <a href="{{ coauthor_url }}">
+              {{- author.first }}
+              {{ author_last_html -}}
+            </a>
+          {%- else -%}
+            {{- author.first }}
+            {{ author_last_html -}}
+          {% endif %}
+        {%- endif -%}
+      {% endfor %}
+      {%- assign more_authors = author_array_size | minus: author_array_limit -%}
+      {% if more_authors > 0 %}
+        {%- assign more_authors_hide = more_authors | append: ' more author' -%}
+        {%- if more_authors > 1 -%}
+          {% assign more_authors_hide = more_authors_hide | append: 's' %}
+        {%- endif -%}
+        {% assign more_authors_show = '' %}
+        {%- for author in entry.author_array offset: author_array_limit -%}
+          {% assign more_authors_show = more_authors_show | append: author.first | append: ' ' | append: author.last %}
+          {% unless forloop.last %}
+            {% assign more_authors_show = more_authors_show | append: ', ' %}
+          {% endunless %}
+        {%- endfor -%}
+        , and {{ more_authors_hide }}
+      {% endif %}
+    </div>
+
+    <!-- Venue / conference and awards -->
+    {% assign proceedings = 'inproceedings,incollection' | split: ',' %}
+    {% assign thesis = 'thesis,mastersthesis,phdthesis' | split: ',' %}
+    {% if entry.type == 'article' %}
+      {% capture entrytype %}{{ entry.journal }}{% endcapture %}
+    {% elsif proceedings contains entry.type %}
+      {% capture entrytype %}{{ entry.booktitle }}{% endcapture %}
+    {% elsif thesis contains entry.type %}
+      {% capture entrytype %}{{ entry.school }}{% endcapture %}
+    {% else %}
+      {% capture entrytype %}{% endcapture %}
+    {% endif %}
+
+    {% assign venue_parts = '' %}
+    {% assign entrytype_text = entrytype | strip %}
+    {% if entrytype_text != '' %}
+      {% assign venue_parts = entrytype_text %}
+    {% endif %}
+    {% if entry.year %}
+      {% if venue_parts != '' %}
+        {% assign venue_parts = venue_parts | append: ', ' | append: entry.year %}
+      {% else %}
+        {% assign venue_parts = entry.year %}
+      {% endif %}
+    {% endif %}
+    {% if entry.award_name and entry.award_name != '' %}
+      {% if venue_parts != '' %}
+        {% assign venue_parts = venue_parts | append: ' | ' | append: entry.award_name %}
+      {% else %}
+        {% assign venue_parts = entry.award_name %}
+      {% endif %}
+    {% elsif entry.award and entry.award != '' %}
+      {% assign award_text = entry.award | markdownify | strip_html | strip %}
+      {% if venue_parts != '' %}
+        {% assign venue_parts = venue_parts | append: ' | ' | append: award_text %}
+      {% else %}
+        {% assign venue_parts = award_text %}
+      {% endif %}
+    {% endif %}
+
+    {% if venue_parts != '' %}
+      <div class="periodical">
+        <em>{{ venue_parts }}</em>
+      </div>
+    {% endif %}
+  </div>
+</div>

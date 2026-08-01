@@ -78,7 +78,7 @@
           {%- if author_starred -%}<sup>*</sup>{%- endif -%}
         {%- endcapture -%}
         {%- if author_is_self -%}
-          <em>{{ author_fullname_html }}</em>
+          <strong class="author-self">{{ author_fullname_html }}</strong>
         {%- else -%}
           {%- if coauthor_url -%}
             <a href="{{ coauthor_url }}">{{ author_fullname_html }}</a>

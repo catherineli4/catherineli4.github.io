@@ -1,12 +1,36 @@
-/* Force blue accent (gem Sass load path ignores local _sass/_variables.scss). */
+/* Force blue accent site-wide (overrides gem main.css purple tokens). */
 :root {
-  --global-theme-color: #0076df;
-  --global-hover-color: #0076df;
-  --global-code-bg-color: rgba(0, 118, 223, 0.05);
+  --global-theme-color: #005fc4 !important;
+  --global-hover-color: #005fc4 !important;
+  --global-code-bg-color: rgba(0, 95, 196, 0.05) !important;
+}
+
+a,
+.navbar.navbar-light .navbar-nav .nav-item.active > .nav-link,
+.publications .title a,
+.publications a {
+  color: #005fc4 !important;
+}
+
+a:hover,
+.navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover,
+.publications .title a:hover,
+.publications a:hover {
+  color: #005fc4 !important;
 }
 
 /* Never show year/group headings in publication lists */
 .publications h2.bibliography,
 .publications h3.bibliography {
   display: none !important;
+}
+
+/* Your name: bold, no underline/border */
+.publications .author > em,
+.publications .author > strong.author-self {
+  border-bottom: none !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  color: var(--global-text-color) !important;
+  text-decoration: none !important;
 }

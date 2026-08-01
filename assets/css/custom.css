@@ -12,6 +12,12 @@ a,
   color: #005fc4 !important;
 }
 
+/* "selected publications" heading stays black */
+.post h2 > a {
+  color: var(--global-text-color) !important;
+  text-decoration: none !important;
+}
+
 a:hover,
 .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover,
 .publications .title a:hover,
@@ -25,12 +31,12 @@ a:hover,
   display: none !important;
 }
 
-/* Your name: bold, no underline/border */
+/* Your name: semi-bold, no underline/border */
 .publications .author > em,
 .publications .author > strong.author-self {
   border-bottom: none !important;
   font-style: normal !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   color: var(--global-text-color) !important;
   text-decoration: none !important;
 }

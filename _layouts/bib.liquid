@@ -122,16 +122,6 @@
     {% if entrytype_text != '' %}
       {% assign venue_parts = entrytype_text %}
     {% endif %}
-    {% if entry.year %}
-      {% assign year_str = entry.year | append: '' %}
-      {% unless venue_parts contains year_str %}
-        {% if venue_parts != '' %}
-          {% assign venue_parts = venue_parts | append: ', ' | append: entry.year %}
-        {% else %}
-          {% assign venue_parts = entry.year %}
-        {% endif %}
-      {% endunless %}
-    {% endif %}
     {% if entry.award_name and entry.award_name != '' %}
       {% if venue_parts != '' %}
         {% assign venue_parts = venue_parts | append: ' | ' | append: entry.award_name %}

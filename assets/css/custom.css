@@ -1,0 +1,12 @@
+/* Force blue accent (gem Sass load path ignores local _sass/_variables.scss). */
+:root {
+  --global-theme-color: #0076df;
+  --global-hover-color: #0076df;
+  --global-code-bg-color: rgba(0, 118, 223, 0.05);
+}
+
+/* Never show year/group headings in publication lists */
+.publications h2.bibliography,
+.publications h3.bibliography {
+  display: none !important;
+}

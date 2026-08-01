@@ -2,7 +2,15 @@
 layout: about
 title: about
 permalink: /
-subtitle: catheri4@andrew.cmu.edu
+subtitle: >
+  catheri4@andrew.cmu.edu<br>
+  <span style="font-size: 0.85em">
+  <a href="https://scholar.google.com/citations?user=mcMu2TwAAAAJ&hl=en">Scholar</a>
+  /
+  <a href="https://x.com/CatherineL11638">Twitter</a>
+  /
+  <a href="https://github.com/catherineli4">Github</a>
+  </span>
 
 profile:
   align: right
@@ -10,7 +18,7 @@ profile:
   image_circular: false # crops the image to make it circular
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page
 
 announcements:
   enabled: false # includes a list of news items

@@ -36,7 +36,7 @@ a:hover,
 .publications .author > strong.author-self {
   border-bottom: none !important;
   font-style: normal !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   color: var(--global-text-color) !important;
   text-decoration: none !important;
 }

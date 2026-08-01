@@ -23,4 +23,4 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-hi
+Hi! I am an incoming senior studying computer science at CMU, where I am advised by [Aditi Raghunathan](https://www.cs.cmu.edu/~aditirag/). I am broadly interested in the science of deep learning and optimization. Please reach out if you would like to chat!
